@@ -36,3 +36,21 @@ Using the transactional snapshots, records were aggregated at the individual `Cu
 To overcome the absence of explicit default tracking tags, a programmatic classification rule engine was implemented to categorize profiles:
 * **Bad Risk (Label 1):** Customers exhibiting active platform fraud flags OR falling into the lower 25th percentiles of transactional frequency and total spending volume.
 * **Good Risk (Label 0):** Stable, high-engagement users displaying reliable operational continuity, making them prime candidates for the Buy-Now-Pay-Later (BNPL) rollout.
+
+---
+
+## Task 4: Model Training and Performance Evaluation
+
+### 1. Modeling Strategy & Pipelines
+Two distinct algorithmic modeling frameworks were established to test trade-offs in risk profiling accuracy vs interpretability:
+* **Logistic Regression Baseline:** Trained on scaled continuous aggregates to establish a transparent baseline comparable to standard regulatory credit scorecards.
+* **Random Forest Ensemble:** Implemented with hyperparameter balancing configurations to capture non-linear behavioral threshold signals across user transaction history profiles.
+
+### 2. Evaluation Metric Matrix
+Models are assessed using standard credit classification diagnostics:
+* **Precision:** Minimizes the risk of mistakenly flagging high-performing customers as bad risk profiles (protects revenue generation potential).
+* **Recall (Sensitivity):** Maximizes detection of true default events, minimizing financial exposure to unrecoverable non-performing loans (protects capital reserves).
+* **ROC-AUC:** Demonstrates overall statistical separation capacity across varying risk tolerance thresholds.
+
+### 3. Regulatory Trade-off Matrix
+While the complex tree ensemble models regularly achieve higher operational precision and recall by navigating complex alternative behavioral variables, Logistic Regression remains an essential audit anchor. Under Basel II parameters, the transparency of linear coefficients ensures that credit approval decisions remain perfectly explainable and compliant for third-party auditing reviews.
