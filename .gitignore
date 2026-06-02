@@ -3,16 +3,35 @@ data/
 *.pkl
 *.joblib
 
-# Python environment and caches
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Environments
 venv/
 .venv/
-__pycache__/
-.pytest_cache/
+env/
+.env/
 
-# MLflow tracking
+# Jupyter
+.ipynb_checkpoints/
+
+# MLflow tracking / artifacts (often large)
 mlruns/
 
-# Windows specific
+# OS / IDE
+.DS_Store
 Thumbs.db
 Desktop.ini
 .vscode/
+.idea/
