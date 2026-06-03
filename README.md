@@ -54,3 +54,21 @@ Models are assessed using standard credit classification diagnostics:
 
 ### 3. Regulatory Trade-off Matrix
 While the complex tree ensemble models regularly achieve higher operational precision and recall by navigating complex alternative behavioral variables, Logistic Regression remains an essential audit anchor. Under Basel II parameters, the transparency of linear coefficients ensures that credit approval decisions remain perfectly explainable and compliant for third-party auditing reviews.
+
+---
+
+## Task 5: Model Serving API Deployment
+
+### 1. API Architecture Overview
+The predictive scoring pipeline is wrapped within a production-grade REST API utilizing the high-performance **FastAPI** web framework. The system exposes endpoints to process sub-second alternative credit screening queries from Bati Bank's core banking modules or merchant frontends.
+
+### 2. Live Swagger Interactive Documentation
+FastAPI automatically generates Open-API specifications at the runtime environment. 
+* **Service URL:** `http://127.0.0.1:8000`
+* **Interactive Testing Console:** `http://127.0.0.1:8000/docs`
+
+### 3. Payload Request/Response Schema Matrix
+* **Inbound JSON POST Data:** Captures real-time consumer attributes (`Recency`, `Frequency`, `Total_Spending`, `Average_Transaction_Value`, `Max_Transaction_Value`, `Transaction_Value_Std`).
+* **Outbound Response JSON Mapping:** Returns structural decision components:
+  * `Credit_Risk_Assessment`: Evaluation output (`APPROVED` or `DENIED`).
+  * `Default_Probability_Score`: A continuous probability metric between `0.0` and `1.0` indicating the predictive likelihood of loan delinquency.
