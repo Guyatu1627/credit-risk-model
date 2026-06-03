@@ -1,15 +1,8 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 class PredictionRequest(BaseModel):
-    Recency: float = Field(..., description="Days elapsed since the customer's last transaction")
-    Frequency: float = Field(..., description="Total platform transaction count executed by the user")
-    Total_Spending: float = Field(..., description="Absolute monetary footprint volume")
-    Average_Transaction_Value: float = Field(..., description="Mean ticket size per transaction")
-    Max_Transaction_Value: float = Field(..., description="Peak observed transaction size spike")
-    Transaction_Value_Std: float = Field(..., description="Standard deviation tracking spending variance")
-
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "Recency": 5.0,
                 "Frequency": 14.0,
@@ -19,6 +12,13 @@ class PredictionRequest(BaseModel):
                 "Transaction_Value_Std": 2100.0
             }
         }
+    )
+    Recency: float = Field(..., description="Days elapsed since the customer's last transaction")
+    Frequency: float = Field(..., description="Total platform transaction count executed by the user")
+    Total_Spending: float = Field(..., description="Absolute monetary footprint volume")
+    Average_Transaction_Value: float = Field(..., description="Mean ticket size per transaction")
+    Max_Transaction_Value: float = Field(..., description="Peak observed transaction size spike")
+    Transaction_Value_Std: float = Field(..., description="Standard deviation tracking spending variance")
 
 class PredictionResponse(BaseModel):
     Credit_Risk_Assessment: str = Field(..., description="Final approval output ('APPROVED' or 'DENIED')")

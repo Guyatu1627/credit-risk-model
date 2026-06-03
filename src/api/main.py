@@ -7,20 +7,10 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
 from src.api.pydantic_models import PredictionRequest, PredictionResponse
 
-app = FastAPI(
-    title="Bati Bank Credit Scoring API",
-    description="Containerized FastAPI web engine running real-time BNPL default evaluations.",
-    version="1.0.0"
-)
-
-# Core persistent model placeholders
-MODEL = RandomForestClassifier(n_estimators=100, random_state=42, class_weight='balanced')
-SCALER = StandardScaler()
-
-@app.on_event("startup")
-def load_credit_scoring_engine():
-    """Initializes and trains a functional model on startup to simulate registry loading."""
-    global MODEL, SCALER
+def _initialize_model():
+    """Initialize and train the model and scaler."""
+    model = RandomForestClassifier(n_estimators=100, random_state=42, class_weight='balanced')
+    scaler = StandardScaler()
     
     # Check possible paths for features data file
     possible_paths = ["data/processed/customer_features.csv", "../data/processed/customer_features.csv", "./data/processed/customer_features.csv"]
@@ -36,16 +26,27 @@ def load_credit_scoring_engine():
         X = df_features[feature_cols]
         y = df_features['Default_Proxy']
         
-        X_scaled = SCALER.fit_transform(X)
-        MODEL.fit(X_scaled, y)
+        X_scaled = scaler.fit_transform(X)
+        model.fit(X_scaled, y)
         print("Model state successfully initialized and verified for real-time predictions.")
     else:
         # Mock training setup to ensure tests never fail if data asset is separated
         X_mock = np.random.rand(100, 6)
         y_mock = np.random.choice([0, 1], size=100)
-        SCALER.fit(X_mock)
-        MODEL.fit(X_mock, y_mock)
+        scaler.fit(X_mock)
+        model.fit(X_mock, y_mock)
         print("Running in validation placeholder context.")
+    
+    return model, scaler
+
+# Initialize model and scaler at module level
+MODEL, SCALER = _initialize_model()
+
+app = FastAPI(
+    title="Bati Bank Credit Scoring API",
+    description="Containerized FastAPI web engine running real-time BNPL default evaluations.",
+    version="1.0.0"
+)
 
 @app.get("/")
 def read_root():
